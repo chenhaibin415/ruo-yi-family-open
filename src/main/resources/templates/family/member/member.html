@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('家族成员列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>编号：</label>
+                                <input type="text" name="mId"/>
+                            </li>
+                            <li>
+                                <label>名字：</label>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <label>家族：</label>
+                                <select id="surnameId" name="surnameId">
+                                    <option value="0">所有</option>
+                                    <option th:each="dict : ${fcanList}" th:text="${dict.name}" th:value="${dict.cId}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>辈分：</label>
+                                <select id="seniorityId" name="seniorityId">
+                                    <option value="0">所有</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>父亲：</label>
+                                <select id="fatherId" name="fatherId">
+                                    <option value="0">所有</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>母亲：</label>
+                                <select id="motherId" name="motherId">
+                                    <option value="0">所有</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>登记状态：</label>
+                                <select name="statusFlag" th:with="type=${@dict.getType('f_status_flag')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>健在状态：</label>
+                                <select name="deathFlag">
+                                    <option value="">所有</option>
+                                    <option value="0">健在</option>
+                                    <option value="1">死亡</option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="family:member:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="family:member:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="family:member:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="family:member:export" style="display: none;">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('family:member:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('family:member:remove')}]];
+        var prefix = ctx + "family/member";
+
+        //家族列表选择项改变联动其他下拉列表改动
+        $("#surnameId").change(function (){
+            var surnameId = $("#surnameId").val();
+            console.log("列表改变的值：" + surnameId);
+            //清空辈分列表
+            var seniorityIdSEL = $("#seniorityId");
+            seniorityIdSEL.empty();
+            seniorityIdSEL.append("<option value='0'>所有</option>");
+            //清空父亲下拉列表
+            var fatherIdSEL = $("#fatherId");
+            fatherIdSEL.empty();
+            fatherIdSEL.append("<option value='0'>所有</option>");
+            //清空母亲下拉列表
+            var motherIdSEL = $("#motherId");
+            motherIdSEL.empty();
+            motherIdSEL.append("<option value='0'>所有</option>");
+            $.ajax({
+                url: prefix + "/clanSelectChange",
+                type: 'GET',
+                data: {
+                    surnameId: surnameId
+                },
+                success: function (data) {
+                    if(data.code == 0 && data.rows.length > 0){
+                        //联动所属辈分下拉列表
+                        var fSeniorityList = data.rows[0].fSeniorityList;
+                        if(fSeniorityList.length > 0){
+                            for (var i = 0; i < fSeniorityList.length; i++) {
+                                seniorityIdSEL.append("<option value='" + fSeniorityList[i].sId + "'>" + fSeniorityList[i].numTag + "</option>");
+                            }
+                        }
+                        //联动父亲下拉列表
+                        var memberList = data.rows[0].memberList;
+                        if(memberList.length > 0){
+                            for (var k = 0; k < memberList.length; k++) {
+                                fatherIdSEL.append("<option value='" + memberList[k].mId + "'>" + memberList[k].fullName + "（编号：" + memberList[k].mId + "）</option>");
+                            }
+                        }
+                        //联动母亲下拉列表
+                        var fMateList = data.rows[0].fMateList;
+                        if(fMateList.length > 0){
+                            for (var j = 0; j < fMateList.length; j++) {
+                                motherIdSEL.append("<option value='" + fMateList[j].mId + "'>" + fMateList[j].surname + fMateList[j].name + "（编号：" + fMateList[j].mId + "）</option>");
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        /*家族成员管理-编辑头像*/
+        function avatar(mid) {
+            var url = prefix + '/avatar/' + mid;
+            top.layer.open({
+                type: 2,
+                area: [$(window).width() + 'px', $(window).height() + 'px'],
+                fix: false,
+                //不固定
+                maxmin: true,
+                shade: 0.3,
+                title: "修改头像",
+                content: url,
+                btn: ['确定', '关闭'],
+                // 弹层外区域关闭
+                shadeClose: true,
+                yes: function(index, layero) {
+                    var iframeWin = layero.find('iframe')[0];
+                    iframeWin.contentWindow.submitHandler(index, layero);
+                },
+                cancel: function(index) {
+                    return true;
+                }
+            });
+        }
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "家族成员",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'mId',
+                    title: '编号',
+                    align: 'center',
+                    visible: true
+                },
+                {
+                    field: 'name',
+                    title: '名字',
+                    align: 'center'
+                },
+                {
+                    field: 'sex',
+                    title: '性别',
+                    align: 'center',
+                    formatter:function (value, row, index){
+                        switch (value){
+                            case "0":
+                                return "男";
+                            case "1":
+                                return "女";
+                            case "2":
+                                return "未知";
+                        }
+                    }
+                },
+                {
+                    field: 'birthdayStr',
+                    title: '出生日期',
+                    align: 'center'
+                },
+                {
+                    field: 'surnameName',
+                    title: '所属家族',
+                    align: 'center'
+                },
+                {
+                    field: 'numTag',
+                    title: '辈分世',
+                    align: 'center'
+                },
+                {
+                    field: 'fatherFullName',
+                    title: '父亲姓名',
+                    align: 'center'
+                },
+                {
+                    field: 'montherFullName',
+                    title: '母亲姓名',
+                    align: 'center'
+                },
+                {
+                    field: 'mateNames',
+                    title: '配偶姓名',
+                    align: 'center'
+                },
+                {
+                    field: 'headUrl',
+                    title: '头像',
+                    align: 'center',
+                    formatter:function (value, row, index){
+                        var headUrl = value;
+                        if(headUrl == undefined || headUrl == "")
+                        {
+                            headUrl = "/img/profile.jpg";
+                        }
+                        //return '<img class="img-circle img-lg" src="' + headUrl + '" style="width: 80px;height: 80px;" onerror="this.src=\'/img/profile.jpg\'">'
+                        return $.table.imageView(headUrl);
+                    }
+                },
+                {
+                    field: 'statusFlag',
+                    title: '谱书登记状态',
+                    align: 'center',
+                    formatter:function (value, row, index){
+                        switch (value){
+                            case "0":
+                                return "未登记";
+                            case "1":
+                                return "已登记";
+                        }
+                    }
+                },
+                {
+                    field: 'deathFlag',
+                    title: '是否健在',
+                    align: 'center',
+                    formatter:function (value, row, index){
+                        switch (value){
+                            case "0":
+                                return "是";
+                            case "1":
+                                return "否";
+                        }
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.mId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-success btn-xs href="javascript:void(0)" onclick="avatar(\'' + row.mId + '\')"><i class="fa fa-edit"></i>编辑头像</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.mId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

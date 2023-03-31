@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>家谱管理介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/style.min.css" th:href="@{/css/style.min.css}" rel="stylesheet"/>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3daad3cd211fc29a6816726c1bf34ed8";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+
+<body class="gray-bg">
+    <div class="row border-bottom white-bg dashboard-header">
+        <div class="col-sm-12">
+            <blockquote class="text-warning" style="font-size:16px">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此项目是基于RuoYi-fast-v4.7.4单项目版本基础上扩展开发的一个家族管理后台系统，由于从小对家族事情了解少，所以一直以来就想自己开发一套家族管理系统来替代纸质的家谱。在开发此项目之前一直没有接触过javaweb项目，此项目开发也是一个学习的过程，项目如有问题也请多多包含和指教。感谢若依项目的开源，此项目基于若依开发所以也开源出来希望可以帮助到个人和家族，请勿商业使用，谢谢！
+            </blockquote>
+
+            <hr>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>捐赠（家谱管理系统作者）</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="alert alert-warning">
+                        请作者喝杯咖啡（点击图片放大）
+                    </div>
+                    <p id="pay-qrcode-chb">
+                        <a href="javascript:;"><img th:src="@{/img/pay.png}" width="100%" alt="请使用手机支付宝或者微信扫码支付">
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <h2 style="text-align: center;">陳氏陸拾班</h2>
+			<p><h3 style="text-align: center;">惟 &nbsp;&nbsp; 端 &nbsp;&nbsp; 量 &nbsp;&nbsp; 勤 &nbsp;&nbsp; 香 &nbsp;&nbsp; 餘</h3></p>
+			<p><h3 style="text-align: center;">今 &nbsp;&nbsp; 自 &nbsp;&nbsp; 材 &nbsp;&nbsp; 儉 &nbsp;&nbsp; 壹 &nbsp;&nbsp; 庆</h3></p>
+			<p><h3 style="text-align: center;">能 &nbsp;&nbsp; 开 &nbsp;&nbsp; 修 &nbsp;&nbsp; 家 &nbsp;&nbsp; 恢 &nbsp;&nbsp; 原</h3></p>
+			<p><h3 style="text-align: center;">顯 &nbsp;&nbsp; 基 &nbsp;&nbsp; 正 &nbsp;&nbsp; 声 &nbsp;&nbsp; 祖 &nbsp;&nbsp; 是</h3></p>
+			<p><h3 style="text-align: center;">達 &nbsp;&nbsp; 厚 &nbsp;&nbsp; 業 &nbsp;&nbsp; 振 &nbsp;&nbsp; 德 &nbsp;&nbsp; 聚</h3></p>
+			<br>
+			<p><h3 style="text-align: center;">歴 &nbsp;&nbsp; 继 &nbsp;&nbsp; 素 &nbsp;&nbsp; 詩 &nbsp;&nbsp; 令 &nbsp;&nbsp; 支</h3></p>
+			<p><h3 style="text-align: center;">代 &nbsp;&nbsp; 因 &nbsp;&nbsp; 位 &nbsp;&nbsp; 書 &nbsp;&nbsp; 柱 &nbsp;&nbsp; 延</h3></p>
+			<p><h3 style="text-align: center;">善 &nbsp;&nbsp; 衍 &nbsp;&nbsp; 守 &nbsp;&nbsp; 世 &nbsp;&nbsp; 焕 &nbsp;&nbsp; 萬</h3></p>
+			<p><h3 style="text-align: center;">名 &nbsp;&nbsp; 緒 &nbsp;&nbsp; 彝 &nbsp;&nbsp; 泽 &nbsp;&nbsp; 宗 &nbsp;&nbsp; 骥</h3></p>
+			<p><h3 style="text-align: center;">揚 &nbsp;&nbsp; 長 &nbsp;&nbsp; 常 &nbsp;&nbsp; 光 &nbsp;&nbsp; 堂 &nbsp;&nbsp; 昌</h3></p>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>捐赠（若依作者）</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="alert alert-warning">
+                        请作者喝杯咖啡（点击图片放大）
+                    </div>
+                    <p id="pay-qrcode">
+                        <a href="javascript:;"><img th:src="@{/img/ruoyi_pay.png}" width="100%" alt="请使用手机支付宝或者微信扫码支付">
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script type="text/javascript">
+	    $('#pay-qrcode-chb').click(function(){
+	        var html=$(this).html();
+	        parent.layer.open({
+	            title: false,
+	            type: 1,
+	            closeBtn:false,
+	            shadeClose:true,
+	            area: ['600px', '360px'],
+	            content: html
+	        });
+	    });
+        $('#pay-qrcode').click(function(){
+            var html=$(this).html();
+            parent.layer.open({
+                title: false,
+                type: 1,
+                closeBtn:false,
+                shadeClose:true,
+                area: ['600px', '360px'],
+                content: html
+            });
+        });
+    </script>
+</body>
+</html>

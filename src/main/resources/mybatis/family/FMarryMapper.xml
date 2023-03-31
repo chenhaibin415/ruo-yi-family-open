@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.family.marry.mapper.FMarryMapper">
+    
+    <resultMap type="FMarry" id="FMarryResult">
+        <result property="mId"    column="m_id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="mateId"    column="mate_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="surnameId"    column="surname_id"    />
+        <result property="memName"    column="memName"    />
+        <result property="memBirthday"    column="memBirthday"    />
+        <result property="mateSurname"    column="mateSurname"    />
+        <result property="mateName"    column="mateName"    />
+        <result property="mateBirthday"    column="mateBirthday"    />
+        <result property="clanSurname"    column="clanSurname"    />
+        <result property="surnameName"    column="surnameName"    />
+
+    </resultMap>
+
+    <sql id="selectFMarryVo">
+        select fm.m_id, fm.member_id, fm.mate_id, fm.remark, fm.del_flag, fm.create_by, fm.create_time, fm.update_by, fm.update_time, fmem.surname_id, fmem.name as memName, fmem.birthday as memBirthday, fma.surname as mateSurname, fma.name as mateName, fma.birthday as mateBirthday, fc.surname as clanSurname, fc.c_name as surnameName from f_marry fm left join f_member fmem on fm.member_id = fmem.m_id left join f_mate fma on fm.mate_id = fma.m_id left join f_clan fc on fmem.surname_id = fc.c_id
+    </sql>
+
+    <select id="selectFMarryList" parameterType="FMarry" resultMap="FMarryResult">
+        <include refid="selectFMarryVo"/>
+        <where>
+             and fm.del_flag = '0'
+            <if test="surnameId != null and surnameId != 0 "> and fmem.surname_id = #{surnameId}</if>
+            <if test="memberId != null and memberId != 0 "> and fm.member_id = #{memberId}</if>
+            <if test="mateId != null and mateId != 0 "> and fm.mate_id = #{mateId}</if>
+             order by fm.m_id desc
+        </where>
+    </select>
+    
+    <select id="selectFMarryByMId" parameterType="Integer" resultMap="FMarryResult">
+        <include refid="selectFMarryVo"/>
+        where fm.m_id = #{mId}
+    </select>
+        
+    <insert id="insertFMarry" parameterType="FMarry" useGeneratedKeys="true" keyProperty="mId">
+        insert into f_marry
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="mateId != null">mate_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="mateId != null">#{mateId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFMarry" parameterType="FMarry">
+        update f_marry
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="mateId != null">mate_id = #{mateId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where m_id = #{mId}
+    </update>
+
+    <delete id="updateFMarryDelByMId" parameterType="Integer">
+        update f_marry set del_flag='2' where m_id = #{mId}
+    </delete>
+
+    <delete id="updateFMarryDelByMIds" parameterType="String">
+        update f_marry set del_flag='2' where m_id in
+        <foreach item="mId" collection="array" open="(" separator="," close=")">
+            #{mId}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteFMarryByMId" parameterType="Integer">
+        delete from f_marry where m_id = #{mId}
+    </delete>
+
+    <delete id="deleteFMarryByMIds" parameterType="String">
+        delete from f_marry where m_id in 
+        <foreach item="mId" collection="array" open="(" separator="," close=")">
+            #{mId}
+        </foreach>
+    </delete>
+
+</mapper>

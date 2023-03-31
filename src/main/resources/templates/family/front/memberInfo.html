@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" data-dpr="1" style="font-size: 41.4px;" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>家族成员个人详细信息</title>
+    <meta name="applicable-device" content="mobile">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <link rel="stylesheet" type="text/css" href="/css/front/index.css">
+    <style type="text/css">
+        .infotext {
+            font-size: 0.427rem;
+            color: #222;
+            line-height: 1.5;
+            padding: 0.133rem 0 0.427rem;
+            /* font-weight: bold; */
+        }
+        .singletext {
+            font-size: 0.427rem;
+            color: #222;
+            line-height: 1;
+            padding: 0.133rem 0 0.427rem;
+            /* font-weight: bold; */
+        }
+    </style>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3daad3cd211fc29a6816726c1bf34ed8";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body style="font-size: 12px;">
+
+<div class="wrap" th:object="${member}">
+
+    <input id="clanCode" th:value="${clanCode}" type="hidden">
+    <input id="selectName" th:value="${selectName}" type="hidden">
+    <input id="lunarFlag" th:value="*{lunarFlag}" type="hidden">
+    <!--返回-->
+    <div class="search-fix"></div>
+    <div class="search-mod clearfix">
+        <div class="search-con fl">
+            <a style="cursor:pointer;" onclick="closeClick()" class="downloadApp-btn"> 返 回 </a>
+        </div>
+    </div>
+    <!--返回 end-->
+
+    <div class="teacherRecommend-mod">
+        <div class="tit clearfix">
+            <h3>基本信息</h3>
+        </div>
+        <div class="list clearfix">
+            <ul>
+                <li>
+                    <div>
+                        <div class="pic">
+                            <img id="headUrl" th:src="*{headUrl}" th:onerror="'this.src=\'' + @{'/img/profile.jpg'} + '\''">
+                        </div>
+                        <div class="text">
+                            <div id="name" class="singletext">姓名：<a th:text="*{fullName}"></a></div>
+                            <div id="sex" class="singletext">性别：<a th:text="${member.sex == '1' ? '女' : '男'}"></a></div>
+                            <div id="age" class="singletext">年龄：<a id="aAge" th:text="*{age}"></a></div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="wordName" th:style="${member.wordName != '' ? 'display: block' : 'display: none'}" class="singletext">字：<a th:text="*{wordName}"></a></div>
+                    <div id="numName" th:style="${member.numName != '' ? 'display: block' : 'display: none'}" class="singletext">号：<a th:text="*{numName}"></a></div>
+                    <div class="singletext">出生日期：<a id="birthday" th:text="${#dates.format(member.birthday,'yyyy-MM-dd')}"></a></div>
+                    <div id="birthdayMark" class="infotext">出生日期（农历）：<a th:text="*{birthdayMark}"></a></div>
+                    <div id="barthTime" th:style="${birthdayTime != '' ? 'display: block' : 'display: none'}" class="singletext">出生时间：<a th:text="${birthdayTime}"></a></div>
+                    <div id="barthHour" class="singletext">出生时辰：<a th:text="*{barthHour}"></a></div>
+                    <div id="cnTag" class="singletext">字辈：<a th:text="*{cnTag}"></a>字辈</div>
+                    <div id="numTag" class="singletext">辈分世：第<a th:text="*{numTag}"></a></div>
+                    <div id="fatherFullName" class="singletext">父亲姓名：<a th:text="*{fatherFullName}"></a></div>
+                    <div id="motherFullName" class="singletext">母亲姓名：<a th:text="*{montherFullName}"></a></div>
+                    <div id="mateNames" th:style="${member.mateNames != '-' ? 'display: block' : 'display: none'}" class="singletext">配偶姓名：<a th:text="*{mateNames}"></a></div>
+                    <div id="address" class="infotext">家庭地址：<a th:text="*{address}"></a></div>
+                    <div id="statusFlag" class="infotext">谱书登记状态：<a th:text="${member.statusFlag == '1' ? '已登记' : '未登记'}"></a></div>
+                    <div id="deathContainer" th:style="${member.deathFlag == '1' ? 'display: block' : 'display: none'}">
+                        <div class="infotext">在世状态：已过世</div>
+                        <div id="deathday" class="infotext">死亡日期：<a th:text="${#dates.format(member.deathday,'yyyy-MM-dd')}"></a></div>
+                        <div id="deathdayMark" class="infotext">死亡日期（农历）：<a th:text="*{deathdayMark}"></a></div>
+                        <div id="ageofDeath" class="infotext">享年：<a th:text="*{ageofDeath}"></a> 岁（虚岁）</div>
+                        <div id="funeralAddr" class="infotext">殡葬地址：<a th:text="*{funeralAddr}"></a></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="birDivContainer1" style="display: none;" class="tit clearfix">
+            <h3>智能计算</h3>
+        </div>
+        <div id="birDivContainer2" style="display: none;" class="list clearfix">
+            <ul>
+                <li>
+                    <div>
+                        <div class="singletext">您目前生日是按照<a style="color: #FF6A00;" th:text="${member.lunarFlag == '1' ? '农历' : '阳历'}"></a>登记</div>
+                        <div class="singletext">农历生日：<a id="lunarBir"></a></div>
+                        <div class="singletext">阳历生日：<a id="solarBir"></a></div>
+                        <div class="singletext">生肖：<a id="animal"></a></div>
+                        <div class="singletext">星座：<a id="astro"></a></div>
+                        <div class="singletext"><a id="birdate">下次生日：还有 0 天</a></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="tit clearfix">
+            <h3>个人简介</h3>
+        </div>
+        <div class="list clearfix">
+            <ul>
+                <li>
+                    <div id="intro" th:utext="*{intro}" class="infotext"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script src="../../../static/js/convertdatetools.js" th:src="@{/js/convertdatetools.js}"></script>
+    <script src="../../../static/js/calendar.js" th:src="@{/js/calendar.js}"></script>
+    <script th:inline="javascript">
+        var prefix = ctx + "family/front";
+        //返回
+        function closeClick(){
+            if (window.WeixinJSBridge) {
+                // 在微信浏览器中
+                window.location.href = prefix + "/index/" + $("#clanCode").val() + "?name=" + $("#selectName").val();
+            } else {
+                // 在其他浏览器中
+                window.location.href = 'about:blank';
+                window.close();
+            }
+        }
+        //计算下次生日、星座、生肖等消息
+        function computingByBirthday(){
+            var birthdayVal = $("#birthday").text();
+            var birthdayDate = new Date(birthdayVal);
+            var nowDate = new Date();
+            var nowDateStr = nowDate.getFullYear() + "-" + (nowDate.getMonth() + 1) + "-" + nowDate.getDate();
+            //当天的日期去除时分秒
+            nowDate = new Date(nowDateStr);
+            var currYear = nowDate.getFullYear();
+            if(birthdayDate != 'Invalid Date'){
+                //日期格式有效
+                var bdYear = birthdayDate.getFullYear();
+                var bdMonth = birthdayDate.getMonth() + 1;
+                var bdDate = birthdayDate.getDate();
+                //农历和阳历转换类只支持1900年到2100年之间的数据转换
+                if(bdYear >= 1900){
+                    var lunarBirVal = "";//农历生日日期
+                    var solarBirVal = "";//阳历生日日期
+                    var dateDiffVal = 0;//下次生日天数
+                    var animalVal = "";//生效
+                    var astroVal = "";//星座
+                    //如果生日是按农历登记
+                    if($("#lunarFlag").val() == "1"){
+                        //获取当前阳历日期并转换为农历
+                        var nowCalendar = calendar.solar2lunar();
+                        var lYear = nowCalendar.lYear;//农历年
+                        //将今年农历生日日期转换为阳历日期
+                        var bdSolar = calendar.lunar2solar(lYear, bdMonth, bdDate);
+                        var bdSolarDate = new Date(bdSolar.date);
+                        //如果转换后的阳历日期比今天小
+                        if(bdSolarDate.getTime() < nowDate.getTime()){
+                            //今年的生日已过年加1
+                            bdSolar = calendar.lunar2solar(lYear + 1, bdMonth, bdDate);
+                        }
+                        dateDiffVal = GetDateDiff(nowDate, bdSolar.date);
+                        //计算出生肖和星座
+                        //如果生日是按农历登记(把农历转阳历)
+                        var birthdaySolar = calendar.lunar2solar(bdYear, bdMonth, bdDate);
+                        animalVal = birthdaySolar.Animal;
+                        astroVal = birthdaySolar.astro;
+                        lunarBirVal = birthdaySolar.lYear + "年" + birthdaySolar.IMonthCn + birthdaySolar.IDayCn;
+                        solarBirVal = birthdaySolar.date;
+                        var ageNum = getYears(birthdaySolar.date, nowDateStr);
+                        $('#aAge').text(ageNum);
+                    }else{
+                        //如果生日是按阳历登记
+                        var bdNowDateStr = currYear + "-" + bdMonth + "-" + bdDate;
+                        var bdNowDate = new Date(bdNowDateStr);
+                        //如果阳历日期比今天小
+                        if(bdNowDate.getTime() < nowDate.getTime()){
+                            bdNowDateStr = (currYear + 1) + "-" + bdMonth + "-" + bdDate;
+                            bdNowDate = new Date(bdNowDateStr);
+                        }
+                        dateDiffVal = GetDateDiff(nowDate, bdNowDate);
+                        //计算出生肖和星座
+                        //如果生日是按阳历登记(把阳历转农历)
+                        var birthdayLunar = calendar.solar2lunar(bdYear, bdMonth, bdDate);
+                        animalVal = birthdayLunar.Animal;
+                        astroVal = birthdayLunar.astro;
+                        lunarBirVal = birthdayLunar.lYear + "年" + birthdayLunar.IMonthCn + birthdayLunar.IDayCn;
+                        solarBirVal = birthdayLunar.date;
+                    }
+                    $('#lunarBir').text(lunarBirVal);
+                    $('#solarBir').text(solarBirVal);
+                    $('#animal').text(animalVal);
+                    $('#astro').text(astroVal);
+                    var birdateStr = "下次生日：还有 " + dateDiffVal + " 天";
+                    if(dateDiffVal == 0){
+                        birdateStr = "下次生日：祝您今天生日快乐！";
+                    }
+                    //如果生日在一周内用亮色提醒
+                    if(dateDiffVal <= 7){
+                        $('#birdate').css("color", "#FF6A00");
+                    }
+                    $('#birdate').text(birdateStr);
+                    //设置生日天数、星座、生肖的div容器显示
+                    $('#birDivContainer1').css('display', 'block');
+                    $('#birDivContainer2').css('display', 'block');
+                }
+            }else{
+                //日期格式无效
+            }
+        }
+
+        //网页加载后执行
+        $(function() {
+            //计算下次生日、星座、生肖等消息
+            computingByBirthday();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, arial, STHeiTi, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin: 0 auto;
+    padding: 0;
+    background: #fff;
+    color: #333;
+}
+
+p,
+ul,
+ol,
+dl,
+dt,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+input,
+select,
+button,
+textarea,
+iframe {
+    margin: 0;
+    padding: 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+video embed,
+video object,
+video iframe,
+video {
+    width: 100%;
+    height: auto;
+}
+
+img {
+    max-width: 100%;
+    vertical-align: top;
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+    -webkit-touch-callout: none;
+}
+
+li,
+ol,
+ul {
+    list-style: none
+}
+
+i,
+em,
+cite {
+    font-style: normal;
+}
+
+.wrap {
+    min-width: 4.267rem;
+    max-width: 10.24rem;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/**/
+.search-fix {
+    display: none;
+    height: 1.484rem;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/**/
+.search-mod {
+    padding: 0.267rem 0.4rem;
+    background: #F8F8F8;
+    position: relative;
+}
+
+.search-mod .search-ipt {
+    float: left;
+    width: 5.0rem;
+    border-radius: 0.667rem;
+    height: 0.90rem;
+    line-height: 0.90rem;
+    text-indent: 1.027rem;
+    border: 0;
+    font-size: 0.373rem;
+    position: relative;
+    z-index: 19;
+}
+
+.search-mod .search-ipt::-webkit-input-placeholder {
+    color: #999;
+}
+
+.search-mod .btn {
+    width: 0.33rem;
+    height: 0.373rem;
+    background: url("../../img/front/ico01.png") no-repeat;
+    background-size: 100%;
+    position: absolute;
+    left: 0.3rem;
+    top: 0.303rem;
+    z-index: 20;
+}
+
+.search-mod .downloadApp-btn {
+    display: block;
+    float: right;
+    width: 1.867rem;
+    line-height: 1;
+    text-align: center;
+    padding: 0.2rem 0;
+    margin-top: 0.12rem;
+	margin-left: 0.32rem;
+    font-size: 0.32rem;
+    color: #FF6A00;
+    border: 1px solid #ff8d34;
+    border-radius: 0.667rem;
+}
+
+.search-mod .search-con {
+    position: relative;
+}
+
+.search-mod .list {
+    display: none;
+    width: 6.933rem;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-top: .96rem;
+    border-radius: 0.48rem;
+    z-index: 9;
+    box-shadow: 0 0.08rem 0.133rem 0 rgba(0, 0, 0, 0.09);
+}
+
+.search-mod .list ul {
+    max-height: 2.799rem;
+    overflow-y: auto;
+}
+
+.search-mod .list li {
+    height: 0.933rem;
+    line-height: 0.933rem;
+    font-size: 0.347rem;
+    padding: 0 0 0 0.44rem;
+}
+
+.search-mod .list ul::-webkit-scrollbar-track-piece {
+    background-color: rgba(194, 194, 194, 0);
+    border-left: 1px solid rgba(255, 86, 104, 0);
+}
+
+.search-mod .list ul::-webkit-scrollbar {
+    width: 5px;
+    height: 13px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.search-mod .list ul::-webkit-scrollbar-thumb {
+    background-color: rgba(194, 194, 194, 0.9);
+    background-clip: padding-box;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    min-height: 28px;
+}
+
+.search-mod .list ul::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(194, 194, 194, 0.9);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    outline: none;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.tc {
+    text-align: center;
+}
+
+.pr {
+    position: relative;
+}
+
+.abs {
+    position: absolute;
+}
+
+textarea {
+    resize: none
+}
+
+input,
+input:focus,
+select,
+textarea,
+button {
+    outline: 0;
+    -webkit-user-modify: read-write-plaintext-only;
+    font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, arial, STHeiTi, sans-serif;
+}
+
+.body-fix,
+.body-fix body,
+.body-fix .wrap {
+    height: 100%;
+}
+
+/**/
+.teacherRecommend-mod {
+    padding-bottom: 0.507rem;
+}
+
+.teacherRecommend-mod .tit {
+    padding: 0.493rem 0 0 0.36rem;
+}
+
+.teacherRecommend-mod .tit h3 {
+    float: left;
+    line-height: 1;
+    padding: 0.04rem 0 0.04rem 0.213rem;
+    font-size: 0.48rem;
+    color: #222;
+    font-weight: bold;
+    position: relative;
+}
+
+.teacherRecommend-mod .tit h3:before {
+    content: "";
+    width: 0.08rem;
+    height: 0.267rem;
+    background: #ff8d34;
+    border-radius: 0.08rem;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -0.133rem;
+}
+
+.teacherRecommend-mod .list {
+    padding: 0 0.4rem;
+}
+
+.teacherRecommend-mod .list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #EAEAEA;
+}
+
+.teacherRecommend-mod .list li:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.teacherRecommend-mod .list .pic {
+    float: left;
+    width: 2.667rem;
+    height: 2.667rem;
+    background: #EBF0F7;
+    position: relative;
+    border-radius: 0.2rem;
+    margin-top: 0.133rem;
+}
+
+.teacherRecommend-mod .list .pic img {
+    width: 2.667rem;
+	height: 2.667rem;
+    position: absolute;
+    left: 50%;
+    margin-left: -1.3335rem;
+    bottom: 0;
+}
+
+.teacherRecommend-mod .list .text {
+    margin-left: 3.093rem;
+    position: relative;
+}
+
+.teacherRecommend-mod .list .text .teacher-btn {
+    width: 1.973rem;
+    line-height: 1;
+    font-size: 0.32rem;
+    padding: 0.16rem 0;
+    text-align: center;
+    color: #FF6A00;
+    border: 1px solid #ff8d34;
+    border-radius: 0.4rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.teacherRecommend-mod .list .text h3 {
+    font-size: 0.427rem;
+    color: #222;
+    line-height: 1;
+    padding: 0.133rem 0 0.427rem;
+    font-weight: bold;
+}
+
+/*.teacherRecommend-mod .list .text .introduce-text {
+    height: 1.067rem;
+}*/
+
+.teacherRecommend-mod .list .text h4 {
+    font-size: 0.373rem;
+    color: #999;
+    line-height: 0.533rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 400;
+}
+
+.teacherRecommend-mod .list .text .video-con {
+    position: relative;
+    background: #fff2e9;
+    margin-top: 0.427rem;
+}
+
+.teacherRecommend-mod .list .text .video-con p {
+    display: block;
+    padding-left: 0.213rem;
+    padding-right: 1.6rem;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    font-size: 0.32rem;
+    color: #222;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.teacherRecommend-mod .list .text .video-con .link-btn {
+    display: block;
+    width: 1.333rem;
+    line-height: 1;
+    font-size: 0.32rem;
+    color: #fff;
+    padding: 0.12rem 0;
+    border-radius: 0.667rem;
+    text-indent: 0.467rem;
+    position: absolute;
+    right: .12rem;
+    top: .12rem;
+    background: #ff8d34;
+    background-image: -webkit-linear-gradient(left, #ff8d34, #fda362);
+    background-image: linear-gradient(left, #ff8d34, #fda362);
+}
+
+.teacherRecommend-mod .list .text .video-con .link-btn:before {
+    content: "";
+    width: 0.173rem;
+    height: 0.24rem;
+    position: absolute;
+    left: 0.253rem;
+    top: 50%;
+    margin-top: -.12rem;
+    background: url("/images/teacher/2020/ico18.png") no-repeat;
+    background-size: 100% auto;
+}

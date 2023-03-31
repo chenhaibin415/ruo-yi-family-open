@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增家族成员')" />
+    <th:block th:include="include :: summernote-css" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-member-add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required"> 所属家族：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" id="surnameId" name="surnameId" required>
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${fcanList}" th:text="${dict.name}" th:value="${dict.cId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">所属辈分：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" id="seniorityId" name="seniorityId" required>
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">名字：</label>
+                <div class="col-sm-8">
+                    <input name="name" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">字：</label>
+                <div class="col-sm-8">
+                    <input name="wordName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">号：</label>
+                <div class="col-sm-8">
+                    <input name="numName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">性别：</label>
+                <div class="col-sm-8">
+                    <select id="sex" name="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}" required>
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">农阳历生日标识：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="lunarFlag" th:with="type=${@dict.getType('f_lunar_flag')}" required>
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:selected="${dict.isDefault == 'Y' ? true : false}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出生日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input id="birthday" type="text" class="form-control" name="birthday" placeholder="yyyy-MM-dd HH:mm:ss">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出生日期(大写)：</label>
+                <div class="col-sm-8">
+                    <input id="birthdayMark" name="birthdayMark" class="form-control" style="width: 70%;float: left;" type="text">
+                    <a class="btn btn-primary single" style="height: 31px;float: left;margin-left: 10px;" onclick="birthdayToCapital()">智能转换大写</a>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出生时辰：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="barthHour" th:with="type=${@dict.getType('f_barth_hour')}">
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" style="display: none;">
+                <label class="col-sm-3 control-label">头像url：</label>
+                <div class="col-sm-8">
+                    <input name="headUrl" class="form-control" value="" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">父亲：</label>
+                <div class="col-sm-8">
+                    <select id="fatherId" name="fatherId" class="form-control select2-multiple">
+                        <option value="0">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">母亲：</label>
+                <div class="col-sm-8">
+                    <select id="motherId" name="motherId" class="form-control select2-multiple">
+                        <option value="0">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" id="mateIdsDiv">
+                <label class="col-sm-3 control-label">配偶姓名：</label>
+                <div class="col-sm-8">
+                    <select class="form-control select2-multiple" id="mateIds" name="mateIds" multiple>
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">家中数字排行：</label>
+                <div class="col-sm-8">
+                    <input name="sortNum" class="form-control" style="width: 60%;float: left;" type="text">
+                    <label class="col-sm-3 control-label" style="width: 40%;float: left;text-align: left;">(如数字1,2,3,4)</label>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">家中文字排行：</label>
+                <div class="col-sm-8">
+                    <input name="sortTag" class="form-control" style="width: 60%;float: left;" type="text">
+                    <label class="col-sm-3 control-label" style="width: 40%;float: left;text-align: left;">(如长子,次子,长女,次女)</label>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label" id="addrLabel">家庭地址：</label>
+                <div class="col-sm-8">
+                    <input name="address" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">手机号：</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <input id="phoneNum" name="phoneNum" class="form-control" type="text" oninput = "value=value.replace(/[^\d]/g,'')" maxlength="11">
+                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">微信号：</label>
+                <div class="col-sm-8">
+                    <input name="wechatNum" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">谱书登记状态：</label>
+                <div class="col-sm-8">
+                    <select class="form-control" name="statusFlag" th:with="type=${@dict.getType('f_status_flag')}" required>
+                        <option value="">请选择</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:selected="${dict.isDefault == 'Y' ? true : false}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否死亡：</label>
+                <div class="col-sm-8">
+                    <label class="radio-box">
+                        <input type="radio" checked="" value="1" id="deathFlag1" name="deathFlag" onchange="deathFlagRadioClick(this)">是</label>
+                    <label class="radio-box">
+                        <input type="radio" value="0" id="deathFlag2" checked="checked" name="deathFlag" onchange="deathFlagRadioClick(this)">否</label>
+                </div>
+             </div>
+            <!-- 死亡信息容器开始 -->
+            <div class="death-container" style="display: none;">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">死亡日期：</label>
+                    <div class="col-sm-8">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input id="deathday" type="text" class="form-control" name="deathday" placeholder="yyyy-MM-dd HH:mm:ss">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">死亡日期(大写)：</label>
+                    <div class="col-sm-8">
+                        <input id="deathdayMark" name="deathdayMark" class="form-control" style="width: 70%;float: left;" type="text">
+                        <a class="btn btn-primary single" style="height: 31px;float: left;margin-left: 10px;" onclick="deathdayToCapital()">智能转换大写</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">殡葬地址：</label>
+                    <div class="col-sm-8">
+                        <input name="funeralAddr" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">享年岁数：</label>
+                    <div class="col-sm-8">
+                        <input id="ageofDeath" name="ageofDeath" class="form-control" style="width: 70%;float: left;" type="text">
+                        <a class="btn btn-primary single" style="height: 31px;float: left;margin-left: 10px;" onclick="ageCalculate()">计算享年岁数</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 死亡信息容器结束 -->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input name="remark" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">个人简介：</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control" name="intro">
+                    <div class="summernote" id="intro"></div>
+                </div>
+            </div>
+            <div class="form-group" style="display: none;">
+                <label class="col-sm-3 control-label">删除标志：</label>
+                <div class="col-sm-8">
+                    <input name="delFlag" class="form-control" value="0" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: summernote-js" />
+    <th:block th:include="include :: select2-js" />
+    <script src="../../../static/js/convertdatetools.js" th:src="@{/js/convertdatetools.js}"></script>
+    <script th:inline="javascript">
+        var prefix = ctx + "family/member"
+        $("#form-member-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-member-add').serialize());
+            }
+        }
+
+        //家族列表选择项改变联动其他下拉列表改动
+        $("#surnameId").change(function (){
+            var surnameIdVal = $("#surnameId").val();
+            console.log("列表改变的值：" + surnameIdVal);
+            if(surnameIdVal != '')
+            {
+                //家族改变不管是否请求是否成功都得清空辈分列表 、父亲列表和母亲列表的值
+                var seniorityIdSEL = $("#seniorityId");
+                seniorityIdSEL.empty();
+                seniorityIdSEL.append("<option value=''>请选择</option>");
+                //父亲下拉列表
+                var fatherIdSEL = $("#fatherId");
+                fatherIdSEL.empty();
+                fatherIdSEL.append("<option value='0'>请选择</option>");
+                //母亲下拉列表
+                var motherIdSEL = $("#motherId");
+                motherIdSEL.empty();
+                motherIdSEL.append("<option value='0'>请选择</option>");
+                //配偶姓名下拉列表
+                var mateIdsSEL = $("#mateIds");
+                mateIdsSEL.empty();
+                mateIdsSEL.append("<option value=''>请选择</option>");
+                $.ajax({
+                    url: prefix + "/clanSelectChange",
+                    type: 'GET',
+                    data: {
+                        surnameId: surnameIdVal
+                    },
+                    success: function (data) {
+                        if(data.code == 0 && data.rows.length > 0){
+                            //联动所属辈分下拉列表
+                            var fSeniorityList = data.rows[0].fSeniorityList;
+                            if(fSeniorityList.length > 0){
+                                for (var i = 0; i < fSeniorityList.length; i++) {
+                                    seniorityIdSEL.append("<option value='" + fSeniorityList[i].sId + "'>" + fSeniorityList[i].numTag + "</option>");
+                                }
+                            }
+                            //联动父亲下拉列表
+                            var memberList = data.rows[0].memberList;
+                            if(memberList.length > 0){
+                                for (var k = 0; k < memberList.length; k++) {
+                                    fatherIdSEL.append("<option value='" + memberList[k].mId + "'>" + memberList[k].fullName + "（编号：" + memberList[k].mId + "）</option>");
+                                }
+                            }
+                            //联动母亲和配偶下拉列表
+                            var fMateList = data.rows[0].fMateList;
+                            if(fMateList.length > 0){
+                                for (var j = 0; j < fMateList.length; j++) {
+                                    var optionStr1 = "<option value='" + fMateList[j].mId + "'>" + fMateList[j].fullName + "（配偶：" + fMateList[j].memberNames + "）</option>";
+                                    var optionStr2 = "<option value='" + fMateList[j].mId + "'>" + fMateList[j].fullName + "（编号：" + fMateList[j].mId + "）</option>";
+                                    if(fMateList[j].memberNames != "-"){
+                                        motherIdSEL.append(optionStr1);
+                                    }else{
+                                        mateIdsSEL.append(optionStr2);
+                                    }
+                                    mateIdsSEL.append(optionStr2);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        //辈分下拉列表改变联动父亲列表
+        $("#seniorityId").change(function (){
+            var seniorityIdVal = $("#seniorityId").val();
+            var surnameIdVal = $("#surnameId").val();
+            console.log("列表改变的值：" + seniorityIdVal);
+            if(seniorityIdVal != '' && surnameIdVal != '')
+            {
+                var fatherIdVal = $("#fatherId").val();
+                //清空父亲下拉列表
+                var fatherIdSEL = $("#fatherId");
+                fatherIdSEL.empty();
+                fatherIdSEL.append("<option value='0'>请选择</option>");
+                $.ajax({
+                    url: prefix + "/senioritySelectChange",
+                    type: 'GET',
+                    data: {
+                        surnameId: surnameIdVal,
+                        sId: seniorityIdVal
+                    },
+                    success: function (data) {
+                        if(data.code == 0 && data.rows.length > 0){
+                            //联动父亲下拉列表
+                            var memberList = data.rows;
+                            for (var k = 0; k < memberList.length; k++) {
+                                var selectedStr = "";
+                                if(fatherIdVal == memberList[k].mId){
+                                    selectedStr = " selected ";
+                                }
+                                fatherIdSEL.append("<option value='" + memberList[k].mId + "'" + selectedStr + ">" + memberList[k].fullName + "（编号：" + memberList[k].mId + "）</option>");
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        //性别下来列表值改变
+        $("#sex").change(function () {
+            var sexVal = $("#sex").val();
+            var addrLabelText = "家庭地址：";
+            if(sexVal == "1"){
+                addrLabelText = "夫家地址：";
+                $("#mateIdsDiv").hide();
+            }else{
+                $("#mateIdsDiv").show();
+            }
+            $("#addrLabel").text(addrLabelText);
+        });
+
+        //是否死亡点选按钮点击事件
+        function deathFlagRadioClick(thisObj) {
+            if(thisObj.value == "1") {
+                $('.death-container').css('display', 'block');
+            }else{
+                $('.death-container').css('display', 'none');
+            }
+        }
+
+        //计算享年岁数
+        function ageCalculate(){
+            var sdate = $("#birthday").val();
+            var edate = $("#deathday").val();
+            var ageofDeathNum = getYears(sdate, edate);
+            //享年是虚岁要加1岁
+            $("#ageofDeath").val(ageofDeathNum + 1);
+        }
+
+        //出生日期转大写
+        function birthdayToCapital(){
+            var sdate = $("#birthday").val();
+            var birthdayCapitalStr = toCapitalDate(sdate);
+            $("#birthdayMark").val(birthdayCapitalStr);
+        }
+
+        //死亡日期转大写
+        function deathdayToCapital(){
+            var edate = $("#deathday").val();
+            var deathdayCapitalStr = toCapitalDate(edate);
+            $("#deathdayMark").val(deathdayCapitalStr);
+        }
+
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#birthday',
+                type: 'datetime',
+                min: '1500-1-1',
+                trigger: 'click'
+            });
+
+            laydate.render({
+                elem: '#deathday',
+                type: 'datetime',
+                min: '1500-1-1',
+                trigger: 'click'
+            });
+        });
+
+        $(function() {
+            $('.summernote').summernote({
+                lang: 'zh-CN',
+                dialogsInBody: true,
+                callbacks: {
+                    onChange: function(contents, $edittable) {
+                        $("input[name='" + this.id + "']").val(contents);
+                    },
+                    onImageUpload: function(files) {
+                        var obj = this;
+                    	var data = new FormData();
+                    	data.append("file", files[0]);
+                    	$.ajax({
+                            type: "post",
+                            url: ctx + "common/upload",
+                    		data: data,
+                    		cache: false,
+                    		contentType: false,
+                    		processData: false,
+                    		dataType: 'json',
+                    		success: function(result) {
+                    		    if (result.code == web_status.SUCCESS) {
+                    		        $('#' + obj.id).summernote('insertImage', result.url);
+                    		    } else {
+                    		        $.modal.alertError(result.msg);
+                    		    }
+                    		},
+                    		error: function(error) {
+                    		    $.modal.alertWarning("图片上传失败。");
+                    		}
+                    	});
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

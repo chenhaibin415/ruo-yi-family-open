@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.family.mate.mapper.FMateMapper">
+    
+    <resultMap type="FMate" id="FMateResult">
+        <result property="mId"    column="m_id"    />
+        <result property="surnameId"    column="surname_id"    />
+        <result property="surnameName"    column="c_name"    />
+        <result property="surname"    column="surname"    />
+        <result property="name"    column="name"    />
+        <result property="lunarFlag"    column="lunar_flag"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="birthdayMark"    column="birthday_mark"    />
+        <result property="barthHour"    column="barth_hour"    />
+        <result property="headUrl"    column="head_url"    />
+        <result property="fatherName"    column="father_name"    />
+        <result property="address"    column="address"    />
+        <result property="phoneNum"    column="phone_num"    />
+        <result property="wechatNum"    column="wechat_num"    />
+        <result property="statusFlag"    column="status_flag"    />
+        <result property="deathFlag"    column="death_flag"    />
+        <result property="deathday"    column="deathday"    />
+        <result property="deathdayMark"    column="deathday_mark"    />
+        <result property="funeralAddr"    column="funeral_addr"    />
+        <result property="ageofDeath"    column="ageof_death"    />
+        <result property="remark"    column="remark"    />
+        <result property="intro"    column="intro"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFMateVo">
+        select fm.m_id, fm.surname_id, fc.c_name, fm.surname, fm.name, fm.lunar_flag ,fm.birthday, fm.birthday_mark, fm.barth_hour, fm.head_url, fm.father_name, fm.address, fm.phone_num, fm.wechat_num, fm.status_flag, fm.death_flag, fm.deathday, fm.deathday_mark, fm.funeral_addr, fm.ageof_death, fm.remark, fm.intro, fm.del_flag, fm.create_by, fm.create_time, fm.update_by, fm.update_time from f_mate fm left join f_clan fc on fm.surname_id = fc.c_id
+    </sql>
+
+    <select id="selectFMateList" parameterType="FMate" resultMap="FMateResult">
+        <include refid="selectFMateVo"/>
+        <where>
+            and fm.del_flag = '0'
+            <if test="mId != null "> and fm.m_id = #{mId}</if>
+            <if test="surname != null  and surname != '' "> and fm.surname = #{surname}</if>
+            <if test="name != null  and name != '' "> and fm.name like concat('%', #{name}, '%')</if>
+            <if test="selectName != null and selectName != '' "> and fm.name = #{selectName}</if>
+            <if test="surnameId != null and surnameId != 0 "> and fm.surname_id = #{surnameId}</if>
+            <if test="statusFlag != null and statusFlag != '' "> and fm.status_flag = #{statusFlag}</if>
+            <if test="deathFlag != null and deathFlag != '' "> and fm.death_flag = #{deathFlag}</if>
+            <if test="notInMIdList != null and notInMIdList.size() > 0 ">
+             and fm.m_id not in
+             <foreach collection="notInMIdList" item="notInMId" open="(" separator="," close=")">
+                 #{notInMId}
+             </foreach>
+            </if>
+            order by fm.m_id desc
+        </where>
+    </select>
+    
+    <select id="selectFMateByMId" parameterType="Integer" resultMap="FMateResult">
+        <include refid="selectFMateVo"/>
+        where fm.m_id = #{mId}
+    </select>
+        
+    <insert id="insertFMate" parameterType="FMate" useGeneratedKeys="true" keyProperty="mId">
+        insert into f_mate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="surnameId != null">surname_id,</if>
+            <if test="surname != null and surname != ''">surname,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="lunarFlag != null">lunar_flag,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="birthdayMark != null">birthday_mark,</if>
+            <if test="barthHour != null">barth_hour,</if>
+            <if test="headUrl != null">head_url,</if>
+            <if test="fatherName != null">father_name,</if>
+            <if test="address != null">address,</if>
+            <if test="phoneNum != null">phone_num,</if>
+            <if test="wechatNum != null">wechat_num,</if>
+            <if test="statusFlag != null">status_flag,</if>
+            <if test="deathFlag != null">death_flag,</if>
+            <if test="deathday != null">deathday,</if>
+            <if test="deathdayMark != null">deathday_mark,</if>
+            <if test="funeralAddr != null">funeral_addr,</if>
+            <if test="ageofDeath != null">ageof_death,</if>
+            <if test="remark != null">remark,</if>
+            <if test="intro != null">intro,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="surnameId != null">#{surnameId},</if>
+            <if test="surname != null and surname != ''">#{surname},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="lunarFlag != null">#{lunarFlag},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="birthdayMark != null">#{birthdayMark},</if>
+            <if test="barthHour != null">#{barthHour},</if>
+            <if test="headUrl != null">#{headUrl},</if>
+            <if test="fatherName != null">#{fatherName},</if>
+            <if test="address != null">#{address},</if>
+            <if test="phoneNum != null">#{phoneNum},</if>
+            <if test="wechatNum != null">#{wechatNum},</if>
+            <if test="statusFlag != null">#{statusFlag},</if>
+            <if test="deathFlag != null">#{deathFlag},</if>
+            <if test="deathday != null">#{deathday},</if>
+            <if test="deathdayMark != null">#{deathdayMark},</if>
+            <if test="funeralAddr != null">#{funeralAddr},</if>
+            <if test="ageofDeath != null">#{ageofDeath},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="intro != null">#{intro},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFMate" parameterType="FMate">
+        update f_mate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="surnameId != null">surname_id = #{surnameId},</if>
+            <if test="surname != null and surname != ''">surname = #{surname},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="lunarFlag != null">lunar_flag = #{lunarFlag},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="birthdayMark != null">birthday_mark = #{birthdayMark},</if>
+            <if test="barthHour != null">barth_hour = #{barthHour},</if>
+            <if test="headUrl != null">head_url = #{headUrl},</if>
+            <if test="fatherName != null">father_name = #{fatherName},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phoneNum != null">phone_num = #{phoneNum},</if>
+            <if test="wechatNum != null">wechat_num = #{wechatNum},</if>
+            <if test="statusFlag != null">status_flag = #{statusFlag},</if>
+            <if test="deathFlag != null">death_flag = #{deathFlag},</if>
+            <if test="deathday != null">deathday = #{deathday},</if>
+            <if test="deathdayMark != null">deathday_mark = #{deathdayMark},</if>
+            <if test="funeralAddr != null">funeral_addr = #{funeralAddr},</if>
+            <if test="ageofDeath != null">ageof_death = #{ageofDeath},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where m_id = #{mId}
+    </update>
+
+    <update id="updateFMateDelByMId" parameterType="Integer">
+        update f_mate set del_flag='2' where m_id = #{mId}
+    </update>
+
+    <update id="updateFMateDelByMIds" parameterType="String">
+        update f_mate set del_flag='2' where m_id in
+        <foreach item="mId" collection="array" open="(" separator="," close=")">
+            #{mId}
+        </foreach>
+    </update>
+
+    <delete id="deleteFMateByMId" parameterType="Integer">
+        delete from f_mate where m_id = #{mId}
+    </delete>
+
+    <delete id="deleteFMateByMIds" parameterType="String">
+        delete from f_mate where m_id in 
+        <foreach item="mId" collection="array" open="(" separator="," close=")">
+            #{mId}
+        </foreach>
+    </delete>
+
+</mapper>

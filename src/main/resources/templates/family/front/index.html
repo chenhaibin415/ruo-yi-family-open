@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" data-dpr="1" style="font-size: 41.4px;" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>家族成员信息查询</title>
+    <meta name="applicable-device" content="mobile">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <link rel="stylesheet" type="text/css" href="/css/front/index.css?v=3">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3daad3cd211fc29a6816726c1bf34ed8";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body style="font-size: 12px;">
+
+<div class="wrap">
+
+    <!--搜索-->
+    <div class="search-fix"></div>
+    <div class="search-mod clearfix">
+        <div class="search-con fl">
+            <a href="javascript:void(0)" class="btn"></a>
+            <input id="inputName" type="text" class="search-ipt" placeholder="请输入姓名">
+            <div class="list">
+                <ul>
+
+                </ul>
+            </div>
+            <a style="cursor:pointer;" class="downloadApp-btn" title="搜 索" onclick="searchClick()"> 搜 索 </a>
+        </div>
+    </div>
+    <!--搜索 end-->
+
+    <!--推荐-->
+    <div class="teacherRecommend-mod">
+        <div class="tit clearfix">
+            <h3 id="clanNameDes">家族成员</h3>
+        </div>
+        <div id="listContainer" class="list clearfix">
+            <br>
+            <br>
+            <br>
+            <h2 style="text-align: center;">陳氏陸拾班</h2>
+            <br>
+            <br>
+            <p><h2 style="text-align: center;">惟 &nbsp;&nbsp; 端 &nbsp;&nbsp; 量 &nbsp;&nbsp; 勤 &nbsp;&nbsp; 香 &nbsp;&nbsp; 餘</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">今 &nbsp;&nbsp; 自 &nbsp;&nbsp; 材 &nbsp;&nbsp; 儉 &nbsp;&nbsp; 壹 &nbsp;&nbsp; 庆</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">能 &nbsp;&nbsp; 开 &nbsp;&nbsp; 修 &nbsp;&nbsp; 家 &nbsp;&nbsp; 恢 &nbsp;&nbsp; 原</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">顯 &nbsp;&nbsp; 基 &nbsp;&nbsp; 正 &nbsp;&nbsp; 声 &nbsp;&nbsp; 祖 &nbsp;&nbsp; 是</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">達 &nbsp;&nbsp; 厚 &nbsp;&nbsp; 業 &nbsp;&nbsp; 振 &nbsp;&nbsp; 德 &nbsp;&nbsp; 聚</h2></p>
+            <br>
+            <br>
+            <p><h2 style="text-align: center;">歴 &nbsp;&nbsp; 继 &nbsp;&nbsp; 素 &nbsp;&nbsp; 詩 &nbsp;&nbsp; 令 &nbsp;&nbsp; 支</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">代 &nbsp;&nbsp; 因 &nbsp;&nbsp; 位 &nbsp;&nbsp; 書 &nbsp;&nbsp; 柱 &nbsp;&nbsp; 延</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">善 &nbsp;&nbsp; 衍 &nbsp;&nbsp; 守 &nbsp;&nbsp; 世 &nbsp;&nbsp; 焕 &nbsp;&nbsp; 萬</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">名 &nbsp;&nbsp; 緒 &nbsp;&nbsp; 彝 &nbsp;&nbsp; 泽 &nbsp;&nbsp; 宗 &nbsp;&nbsp; 骥</h2></p>
+            <br>
+            <p><h2 style="text-align: center;">揚 &nbsp;&nbsp; 長 &nbsp;&nbsp; 常 &nbsp;&nbsp; 光 &nbsp;&nbsp; 堂 &nbsp;&nbsp; 昌</h2></p>
+            <br>
+            <br>
+            <h2 style="text-align: center;">陈氏家族群</h2>
+            <br>
+            <p style="text-align: center;"><img style="width: 4.0rem;height: 4.0rem;" src="/img/front/quncode.png"></p>
+        </div>
+    </div>
+    <!--推荐 end-->
+</div>
+</body>
+<script th:inline="javascript"> var ctx = [[@{/}]]; var captchaType = [[${captchaType}]]; </script>
+<!-- 全局js -->
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script th:inline="javascript">
+    var prefix = ctx + "family/front";
+    var clanCodeVal = "";//家族编码
+
+    //搜索按钮点击事件
+    function searchClick(){
+        var inputNameVal = $("#inputName").val();
+        if(inputNameVal == '' || clanCodeVal.length != 32){
+            alert("参数有误");
+            return;
+        }
+        $("#clanNameDes").text("家庭成员");
+        //清空列表容器原有数据
+        var listContainerDiv = $("#listContainer");
+        listContainerDiv.empty();
+        $.ajax({
+            url: prefix + "/getListByName",
+            type: 'POST',
+            data: {
+                name: inputNameVal,
+                clanCode: clanCodeVal
+            },
+            success: function (data) {
+                if(data.code == 0 && data.rows.length > 0){
+                    var memberList = data.rows;
+                    listContainerDivStr = '<ul>';
+                    for (var i = 0; i < memberList.length; i++) {
+                        listContainerDivStr += '<li>';
+                        listContainerDivStr += '<div class="pic">';
+                        var headUrl = memberList[i].headUrl;
+                        if(headUrl == undefined || headUrl == "") {
+                            headUrl = "/img/profile.jpg";
+                        }
+                        listContainerDivStr += '<img src="' + headUrl + '">';
+                        listContainerDivStr += '</div>';
+                        listContainerDivStr += '<div class="text">';
+                        listContainerDivStr += '<a onclick="memberInfoClick(' + memberList[i].memberType + ', ' + memberList[i].mId + ')" style="cursor:pointer;" class="teacher-btn" >进入主页</a>';
+                        listContainerDivStr += '<h3>' + memberList[i].fullName + '</h3>';
+                        listContainerDivStr += '<div class="introduce-text">';
+                        var birthdayStr = memberList[i].birthday;
+                        if(birthdayStr == null){
+                            birthdayStr = "";
+                        }
+                        listContainerDivStr += '<h4>出生日期：' + birthdayStr + '</h4>';
+                        listContainerDivStr += '</div>';
+                        listContainerDivStr += '<div class="video-con">';
+                        listContainerDivStr += '<p style="font-weight: bold;">与' + inputNameVal + '关系：' + memberList[i].relations + '</p>';
+                        listContainerDivStr += '</div>';
+                        listContainerDivStr += '</div>';
+                        listContainerDivStr += '</li>';
+                    }
+                    listContainerDivStr += '</ul>';
+                    listContainerDiv.html(listContainerDivStr);
+                }else{
+                    alert("查无此人，请确认姓名是否正确！");
+                }
+            }
+        });
+    }
+
+    //进入详情按钮点击事件
+    function memberInfoClick(memberType, mid){
+        var url = prefix;
+        if(memberType == 1){
+            //家族成员
+            url += "/memberInfo";
+        }
+        else{
+            //配偶成员
+            url += "/mateInfo"
+        }
+        url += "/" + mid;
+        url += "?clanCode=" + clanCodeVal + "&selectName=" + $("#inputName").val();
+        //如果是微信里直接当前页面打开
+        if (window.WeixinJSBridge) {
+            window.location.href = url;
+        }else{
+            var tempwindow = window.open('_blank');
+            tempwindow.location = url;
+        }
+    }
+
+    $(function() {
+        //从链接地址中取出家族编码
+        var currLocUrl = $(location).attr("href");
+        clanCodeVal = currLocUrl.substring(currLocUrl.lastIndexOf("/") + 1);
+        //如果有姓名的情况取出姓名
+        if(currLocUrl.indexOf("?name=") > 0){
+            clanCodeVal = currLocUrl.substring(currLocUrl.lastIndexOf("/") + 1, currLocUrl.lastIndexOf("?"));
+            var name = currLocUrl.substring(currLocUrl.lastIndexOf("?name=") + 6);
+            name = decodeURIComponent(name);
+            //alert('name:' + name);
+            $("#inputName").val(name);
+            searchClick();
+        }
+    });
+</script>
+</html>

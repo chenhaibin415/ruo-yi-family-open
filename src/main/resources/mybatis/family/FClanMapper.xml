@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.family.clan.mapper.FClanMapper">
+    
+    <resultMap type="FClan" id="FClanResult">
+        <result property="cId"    column="c_id"    />
+        <result property="cCode"    column="c_code"    />
+        <result property="surname"    column="surname"    />
+        <result property="name"    column="c_name"    />
+        <result property="intro"    column="intro"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFClanVo">
+        select c_id, c_code, surname, c_name, intro, del_flag, create_by, create_time, update_by, update_time from f_clan
+    </sql>
+
+    <select id="selectFClanList" parameterType="FClan" resultMap="FClanResult">
+        <include refid="selectFClanVo"/>
+        <where>
+            and del_flag = '0'
+            <if test="cCode != null  and cCode != ''"> and c_code = #{cCode}</if>
+            <if test="surname != null  and surname != ''"> and surname like concat('%', #{surname}, '%')</if>
+            <if test="name != null  and name != ''"> and c_name like concat('%', #{name}, '%')</if>
+             order by c_id desc
+        </where>
+    </select>
+    
+    <select id="selectFClanByCId" parameterType="Integer" resultMap="FClanResult">
+        <include refid="selectFClanVo"/>
+        where c_id = #{cId}
+    </select>
+        
+    <insert id="insertFClan" parameterType="FClan" useGeneratedKeys="true" keyProperty="cId">
+        insert into f_clan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_code,
+            <if test="surname != null and surname != ''">surname,</if>
+            <if test="name != null and name != ''">c_name,</if>
+            <if test="intro != null">intro,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            replace(uuid(), '-', ''),
+            <if test="surname != null and surname != ''">#{surname},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="intro != null">#{intro},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFClan" parameterType="FClan">
+        update f_clan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cCode != null">c_code = #{cCode},</if>
+            <if test="surname != null and surname != ''">surname = #{surname},</if>
+            <if test="name != null and name != ''">c_name = #{name},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where c_id = #{cId}
+    </update>
+
+    <update id="updateFClanDelByCId" parameterType="Integer">
+        update f_clan set del_flag='2' where c_id = #{cId}
+    </update>
+
+    <update id="updateFClanDelByCIds" parameterType="String">
+        update f_clan set del_flag='2' where c_id in
+        <foreach item="cId" collection="array" open="(" separator="," close=")">
+            #{cId}
+        </foreach>
+    </update>
+
+    <delete id="deleteFClanByCId" parameterType="Integer">
+        delete from f_clan where c_id = #{cId}
+    </delete>
+
+    <delete id="deleteFClanByCIds" parameterType="String">
+        delete from f_clan where c_id in 
+        <foreach item="cId" collection="array" open="(" separator="," close=")">
+            #{cId}
+        </foreach>
+    </delete>
+
+</mapper>

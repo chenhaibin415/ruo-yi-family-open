@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.family.seniority.mapper.FSeniorityMapper">
+    
+    <resultMap type="FSeniority" id="FSeniorityResult">
+        <result property="sId"    column="s_id"    />
+        <result property="surnameId"    column="surname_id"    />
+        <result property="surnameName"    column="c_name"    />
+        <result property="numSort"    column="num_sort"    />
+        <result property="numTag"    column="num_tag"    />
+        <result property="cnTag"    column="cn_tag"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFSeniorityVo">
+        select fs.s_id, fs.surname_id, fc.c_name, fs.num_sort, fs.num_tag, fs.cn_tag, fs.remark, fs.del_flag, fs.create_by, fs.create_time, fs.update_by, fs.update_time from f_seniority fs left join f_clan fc on fs.surname_id = fc.c_id
+    </sql>
+
+    <select id="selectFSeniorityList" parameterType="FSeniority" resultMap="FSeniorityResult">
+        <include refid="selectFSeniorityVo"/>
+        <where>
+            and fs.del_flag = '0'
+            <if test="sId != null"> and fs.s_id = #{sId}</if>
+            <if test="surnameId != null and surnameId != 0"> and fs.surname_id = #{surnameId}</if>
+            <if test="numTag != null  and numTag != ''"> and fs.num_tag = #{numTag}</if>
+            <if test="cnTag != null  and cnTag != ''"> and fs.cn_tag = #{cnTag}</if>
+            order by fs.num_sort asc
+        </where>
+    </select>
+    
+    <select id="selectFSeniorityBySId" parameterType="Integer" resultMap="FSeniorityResult">
+        <include refid="selectFSeniorityVo"/>
+        where fs.s_id = #{sId}
+    </select>
+    
+    <select id="selectMaxNumSortBySurnameId" parameterType="Integer" resultType="java.lang.Integer">
+        select max(num_sort) from f_seniority where del_flag = '0' and surname_id = #{surnameId}
+    </select>
+        
+    <insert id="insertFSeniority" parameterType="FSeniority" useGeneratedKeys="true" keyProperty="sId">
+        insert into f_seniority
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="surnameId != null">surname_id,</if>
+            <if test="numSort != null">num_sort,</if>
+            <if test="numTag != null">num_tag,</if>
+            <if test="cnTag != null">cn_tag,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="surnameId != null">#{surnameId},</if>
+            <if test="numSort != null">#{numSort},</if>
+            <if test="numTag != null">#{numTag},</if>
+            <if test="cnTag != null">#{cnTag},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFSeniority" parameterType="FSeniority">
+        update f_seniority
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="surnameId != null">surname_id = #{surnameId},</if>
+            <if test="numSort != null">num_sort = #{numSort},</if>
+            <if test="numTag != null">num_tag = #{numTag},</if>
+            <if test="cnTag != null">cn_tag = #{cnTag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where s_id = #{sId}
+    </update>
+
+    <update id="updateFSeniorityDelBySId" parameterType="Integer">
+        update f_seniority set del_flag='2' where s_id = #{sId}
+    </update>
+
+    <update id="updateFSeniorityDelBySIds" parameterType="String">
+        update f_seniority set del_flag='2' where s_id in
+        <foreach item="sId" collection="array" open="(" separator="," close=")">
+            #{sId}
+        </foreach>
+    </update>
+
+    <delete id="deleteFSeniorityBySId" parameterType="Integer">
+        delete from f_seniority where s_id = #{sId}
+    </delete>
+
+    <delete id="deleteFSeniorityBySIds" parameterType="String">
+        delete from f_seniority where s_id in 
+        <foreach item="sId" collection="array" open="(" separator="," close=")">
+            #{sId}
+        </foreach>
+    </delete>
+
+</mapper>
