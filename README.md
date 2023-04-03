@@ -47,28 +47,28 @@
 
 <table>
     <tr>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage1.jpg"/></td>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage2.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage1.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage2.jpg"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage3.jpg"/></td>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage4.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage3.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage4.jpg"/></td>
     </tr>
     <tr>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage5.jpg"/></td>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage6.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage5.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage6.jpg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/manage7.jpg"/></td>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/index1.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/manage7.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/index1.jpg"/></td>
     </tr>	 
     <tr>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/index2.jpg"/></td>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/index3.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/index2.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/index3.jpg"/></td>
     </tr>
 	<tr>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/index4.jpg"/></td>
-        <td><img src="https://gitee.com/chenhaibin415/ruo-yi-family-open/raw/develop/showimg/index5.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/index4.jpg"/></td>
+        <td><img src="https://raw.githubusercontent.com/chenhaibin415/ruo-yi-family-open/main/showimg/index5.jpg"/></td>
     </tr>
 </table>
 
